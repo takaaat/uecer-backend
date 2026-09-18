@@ -9,7 +9,17 @@ export interface Status {
   last_status_changed_at?: Date;
 }
 
-export const statusRepository = () => {
+export interface StatusRepository {
+  update: (newStatus: Status) => void;
+  getStatus: () => Status;
+}
+
+export interface LogsRepository {
+  create: (newLog: Log) => void;
+  getLogs: () => Log[];
+}
+
+export const statusRepository = (): StatusRepository => {
   let status: Status = { last_status: false };
   return {
     update: (newStatus: Status) => {
@@ -21,7 +31,7 @@ export const statusRepository = () => {
   };
 };
 
-export const logsRepository = () => {
+export const logsRepository = (): LogsRepository => {
   const logs: Log[] = [];
   return {
     create: (newLog: Log) => {
