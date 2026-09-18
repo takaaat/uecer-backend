@@ -3,6 +3,7 @@ import { getConnInfo } from "hono/cloudflare-workers";
 
 type Bindings = {
   JUDGE_IP_BEG: string;
+  DB: D1Database;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
