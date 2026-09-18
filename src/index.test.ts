@@ -3,6 +3,10 @@ import app from ".";
 import { getConnInfo } from "hono/cloudflare-workers";
 import { ConnInfo } from "hono/conninfo";
 
+const MOCK_ENV = {
+  JUDGE_IP_BEG: "130.153.",
+};
+
 vi.mock("hono/cloudflare-workers");
 
 describe("Example", () => {
@@ -19,7 +23,7 @@ describe("Example", () => {
       },
     };
     vi.mocked(getConnInfo).mockReturnValue(trueConnInfo);
-    const res = await app.request("/check");
+    const res = await app.request("/check", {}, MOCK_ENV);
     expect(res.status).toBe(200);
     expect(await res.json()).toStrictEqual({ judge: true });
   });
@@ -31,7 +35,7 @@ describe("Example", () => {
       },
     };
     vi.mocked(getConnInfo).mockReturnValue(falseConnInfo);
-    const res = await app.request("/check");
+    const res = await app.request("/check", {}, MOCK_ENV);
     expect(res.status).toBe(200);
     expect(await res.json()).toStrictEqual({ judge: false });
   });
