@@ -1,35 +1,13 @@
 export interface Log {
-  started_at: Date;
-  ended_at?: Date;
-}
-
-export interface Status {
-  last_judged_at?: Date;
-  last_status: boolean;
-  last_status_changed_at?: Date;
-}
-
-export interface StatusRepository {
-  update: (newStatus: Status) => void;
-  getStatus: () => Status;
+  is_active: boolean;
+  logged_at: Date;
 }
 
 export interface LogsRepository {
   create: (newLog: Log) => void;
   getLogs: () => Log[];
+  getLatestLog: () => Log | null;
 }
-
-export const statusRepository = (): StatusRepository => {
-  let status: Status = { last_status: false };
-  return {
-    update: (newStatus: Status) => {
-      status = { ...newStatus };
-    },
-    getStatus: () => {
-      return { ...status };
-    },
-  };
-};
 
 export const logsRepository = (): LogsRepository => {
   const logs: Log[] = [];
@@ -39,6 +17,9 @@ export const logsRepository = (): LogsRepository => {
     },
     getLogs: () => {
       return logs;
+    },
+    getLatestLog: () => {
+      return logs[-1];
     },
   };
 };
