@@ -9,7 +9,7 @@ export interface LogsRepository {
   getLatestLog: () => Log | null;
 }
 
-export const logsRepository = (): LogsRepository => {
+export const logsRepository = (D1: D1Database): LogsRepository => {
   const logs: Log[] = [];
   return {
     create: (newLog: Log) => {

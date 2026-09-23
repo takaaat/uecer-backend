@@ -1,5 +1,7 @@
 import { Hono } from "hono";
 import { getConnInfo } from "hono/cloudflare-workers";
+import { mainService } from "./service";
+import { logsRepository } from "./repository";
 
 type Bindings = {
   JUDGE_IP_BEG: string;
@@ -19,6 +21,15 @@ app.get("/check", (c) => {
   if (!address) return c.text("No address", 500);
   return c.json({ judge: address.startsWith(JUDGE_IP_BEG) });
 });
+
+/*
+app.get("/judge", async (c) => {
+  const logsRepo = logsRepository(c.env.D1);
+  const service = mainService(logsRepo);
+  const ret = await service.test();
+  return c.text(ret);
+});
+*/
 
 app.get("/test", async (c) => {
   /*

@@ -1,9 +1,24 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { mainService } from "./service";
-import { Log, logsRepository } from "./repository";
+import { Log, LogsRepository } from "./repository";
+
+export const mockLogsRepository = (): LogsRepository => {
+  const logs: Log[] = [];
+  return {
+    create: (newLog: Log) => {
+      logs.push(newLog);
+    },
+    getLogs: () => {
+      return logs;
+    },
+    getLatestLog: () => {
+      return logs[-1];
+    },
+  };
+};
 
 function createTestFixture() {
-  const logsRepo = logsRepository();
+  const logsRepo = mockLogsRepository();
   const service = mainService(logsRepo);
   return {
     service,
