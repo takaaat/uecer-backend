@@ -1,0 +1,2 @@
+-- Migration number: 0001 	 2026-09-25T23:32:12.573Z
+CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY, active BOOLEAN, logged_at TEXT NOT NULL);

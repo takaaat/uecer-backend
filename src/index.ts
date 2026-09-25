@@ -30,22 +30,3 @@ app.get("/judge", async (c) => {
   return c.text(ret);
 });
 */
-
-app.get("/test", async (c) => {
-  /*
-  const ret = await c.env.D1.prepare(
-    "CREATE TABLE IF NOT EXISTS logs (id INTEGER PRIMARY KEY, active BOOLEAN, logged_at TEXT NOT NULL)",
-  )
-    .bind()
-    .run();
-  console.log(ret.results);
-  */
-  const ret = await c.env.D1.prepare(
-    "select name from sqlite_master where type='table'",
-  )
-    .bind()
-    .run();
-  return c.json(ret.results);
-});
-
-export default app;
