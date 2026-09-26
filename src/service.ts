@@ -2,8 +2,8 @@ import type { Log, LogsRepository } from "./repository";
 
 export interface MainServiceType {
   record: (isActive: boolean) => void;
-  logs: () => Log[];
-  latest: () => Log | null;
+  logs: () => Promise<Log[]>;
+  latest: () => Promise<Log | null>;
 }
 
 export const mainService = (
@@ -11,16 +11,12 @@ export const mainService = (
 ): MainServiceType => {
   return {
     record: (isActive: boolean) => {
-      const now = new Date();
-      logsRepository.create({
-        is_active: isActive,
-        logged_at: now,
-      });
+      logsRepository.create(isActive);
     },
-    logs: () => {
+    logs: async () => {
       return logsRepository.getLogs();
     },
-    latest: () => {
+    latest: async () => {
       return logsRepository.getLatestLog();
     },
   };

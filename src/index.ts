@@ -25,8 +25,22 @@ app.get("/check", (c) => {
 app.get("/judge", async (c) => {
   const logsRepo = logsRepository(c.env.D1);
   const service = mainService(logsRepo);
-  const ret = await service.record(true);
+  await service.record(true);
   return c.text("done");
+});
+
+app.get("/logs", async (c) => {
+  const logsRepo = logsRepository(c.env.D1);
+  const service = mainService(logsRepo);
+  const logs = await service.logs();
+  return c.json(logs);
+});
+
+app.get("/latest", async (c) => {
+  const logsRepo = logsRepository(c.env.D1);
+  const service = mainService(logsRepo);
+  const latestLog = await service.latest();
+  return c.json(latestLog);
 });
 
 export default app;
