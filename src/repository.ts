@@ -12,7 +12,11 @@ export interface LogsRepository {
 export const logsRepository = (D1: D1Database): LogsRepository => {
   const logs: Log[] = [];
   return {
-    create: (newLog: Log) => {
+    create: async (newLog: Log) => {
+      const result = await D1.prepare("INSERT INTO logs (active) VALUES (?);")
+        .bind(newLog.is_active)
+        .run();
+      console.log(result.error);
       logs.push(newLog);
     },
     getLogs: () => {

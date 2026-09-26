@@ -22,11 +22,11 @@ app.get("/check", (c) => {
   return c.json({ judge: address.startsWith(JUDGE_IP_BEG) });
 });
 
-/*
 app.get("/judge", async (c) => {
   const logsRepo = logsRepository(c.env.D1);
   const service = mainService(logsRepo);
-  const ret = await service.test();
-  return c.text(ret);
+  const ret = await service.record(true);
+  return c.text("done");
 });
-*/
+
+export default app;
