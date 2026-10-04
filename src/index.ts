@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import type { Context } from "hono";
 import { getConnInfo } from "hono/cloudflare-workers";
 import { mainService } from "./service";
 import { logsRepository } from "./repository";
@@ -14,18 +15,24 @@ app.get("/", (c) => {
   return c.text("Hello Hono!");
 });
 
-app.get("/check", (c) => {
+const judge = (c: Context) => {
   const JUDGE_IP_BEG = c.env.JUDGE_IP_BEG;
   const info = getConnInfo(c);
   const address = info.remote.address;
-  if (!address) return c.text("No address", 500);
-  return c.json({ judge: address.startsWith(JUDGE_IP_BEG) });
+  if (!address) {
+    return false;
+  }
+  return address.startsWith(JUDGE_IP_BEG);
+};
+
+app.get("/check", (c) => {
+  return c.json({ judge: judge(c) });
 });
 
 app.get("/judge", async (c) => {
   const logsRepo = logsRepository(c.env.D1);
   const service = mainService(logsRepo);
-  await service.record(true);
+  await service.record(judge(c));
   return c.text("done");
 });
 
