@@ -50,4 +50,11 @@ app.get("/latest", async (c) => {
   return c.json(latestLog);
 });
 
+app.get("/analytics", async (c) => {
+  const logsRepo = logsRepository(c.env.D1);
+  const service = mainService(logsRepo);
+  const analytics = await service.analytics(new Date(2026, 9, 1), new Date());
+  return c.json(analytics);
+});
+
 export default app;
